@@ -11,7 +11,6 @@ namespace GreGatr.Tests.Integration
 {
     internal class AggregatorTests
     {
-
         [Test]
         public async Task TestAggregateMoviesAsync()
         {

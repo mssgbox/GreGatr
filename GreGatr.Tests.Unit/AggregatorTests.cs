@@ -39,7 +39,6 @@ namespace GreGatr.Tests.Unit
             if (File.Exists(OutputFilePath)) File.Delete(OutputFilePath);
         }
 
-
         [Test]
         public void GenerateAndWriteFeed_ShouldWriteFeedToFile()
         {
