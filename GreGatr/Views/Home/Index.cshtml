@@ -1,0 +1,21 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<form id="form1" runat="server">
+    @* <%--defaultbutton="btnRotFlix"--%> *@
+    <div class="container">
+
+        <p id="updateProgress" style="display: none;">
+            <img id="progressIndicator" src="~/images/ProgressIndicator.gif" alt="Please Wait." />
+            <br />
+            Getting scores for all available movies...
+            <br />
+            (this might take a couple of minutes)
+        </p>
+        <p id="originalContent">
+            <a href="files/RotFlix.xml" style="color: #384E73;">Feed</a>
+            <a href="/Home/Click" id="btnRotFlix" class="btn" style="color:#384E73;" onclick="displayProgress();">Click</a>
+        </p>
+    </div>
+</form>

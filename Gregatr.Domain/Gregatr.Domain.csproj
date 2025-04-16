@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="..\files\InputMovieList.xml" Link="InputMovieList.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\files\ReferencesConfig.json" Link="ReferencesConfig.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.72" />
+    <PackageReference Include="Microsoft.Playwright" Version="1.51.0" />
+    <PackageReference Include="System.ServiceModel.Syndication" Version="9.0.1" />
+  </ItemGroup>
+	<ItemGroup>
+		<InternalsVisibleTo Include="Gregatr.Tests.Integration" />
+	</ItemGroup>
+</Project>

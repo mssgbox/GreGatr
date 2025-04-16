@@ -1,0 +1,96 @@
+[
+    {
+        "ContentURI": null,
+        "BaseUrl": "https://www.rottentomatoes.com/m/",
+        "ImageSrc": "\u003Cimg src=\u0027http://2.bp.blogspot.com/-URl-RB28yA4/TYK1UU3MfYI/AAAAAAAAANE/lji-MV2rXFs/s1600/RTFresh.jpg\u0027/\u003E",
+        "SearchPath": "//rt-text[@slot=\u0027criticsScore\u0027]",
+        "ResultName": "RTScore",
+        "ItemMatchRules": [
+            {
+                "RuleType": 0,
+                "Find": "An ",
+                "ReplaceWith": "",
+                "Prefix": null,
+                "NestedRule": null
+            },
+            {
+                "RuleType": 0,
+                "Find": " ",
+                "ReplaceWith": "_",
+                "Prefix": null,
+                "NestedRule": null
+            },
+            {
+                "RuleType": 0,
+                "Find": "\u0027",
+                "ReplaceWith": "",
+                "Prefix": null,
+                "NestedRule": null
+            },
+            {
+                "RuleType": 0,
+                "Find": ":",
+                "ReplaceWith": "",
+                "Prefix": null,
+                "NestedRule": null
+            }
+        ]
+    },
+    {
+        "ContentURI": null,
+        "BaseUrl": "https://www.metacritic.com/",
+        "ImageSrc": "\u003Cimg src=\u0027http://1.bp.blogspot.com/-7XnuexOMaqk/TYK1yLzUmMI/AAAAAAAAANM/Mp7KGOphWug/s400/meta.jpg\u0027/\u003E",
+        "SearchPath": "//div[@data-testid=\u0027critic-score-info\u0027]/div//div/span[@data-v-e408cafe]",
+        "ResultName": "MetaScore",
+        "ItemMatchRules": [
+            {
+                "RuleType": 1,
+                "Find": ": Seaso",
+                "ReplaceWith": "/seaso",
+                "Prefix": null,
+                "NestedRule": {
+                    "RuleType": 2,
+                    "Find": null,
+                    "ReplaceWith": null,
+                    "Prefix": "tv/",
+                    "NestedRule": null
+                }
+            },
+            {
+                "RuleType": 2,
+                "Find": null,
+                "ReplaceWith": null,
+                "Prefix": "movie/",
+                "NestedRule": null
+            },
+            {
+                "RuleType": 0,
+                "Find": " ",
+                "ReplaceWith": "-",
+                "Prefix": null,
+                "NestedRule": null
+            },
+            {
+                "RuleType": 0,
+                "Find": "\u0027",
+                "ReplaceWith": "",
+                "Prefix": null,
+                "NestedRule": null
+            },
+            {
+                "RuleType": 0,
+                "Find": ":",
+                "ReplaceWith": "",
+                "Prefix": null,
+                "NestedRule": null
+            },
+            {
+                "RuleType": 3,
+                "Find": null,
+                "ReplaceWith": null,
+                "Prefix": null,
+                "NestedRule": null
+            }
+        ]
+    }
+]

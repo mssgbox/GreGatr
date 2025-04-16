@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - GreGatr</title>
+
+    <link rel="stylesheet" href="~/css/gregatr.css"/>
+
+    <script type="text/javascript">
+        function displayProgress() {
+            var progress = document.getElementById("updateProgress");
+            progress.style.display = "table-cell";
+
+            var originalContent = document.getElementById("originalContent");
+            originalContent.style.display = "none";
+        }
+    </script>
+
+</head>
+<body>
+
+    <div>
+        <main role="main">
+            @RenderBody()
+        </main>
+    </div>
+
+</body>
+</html>

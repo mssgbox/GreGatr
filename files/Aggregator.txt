@@ -1,0 +1,79 @@
+TODO:
+generalize - ISource, scraping, etc.f (see Aggregator.bmp)
+Integrate the reflected code:
+AggregatedFeed (generalize to non-feed?), Source, Fetcher, Parser, , usecases
+
+
+Clean up Reference class - Debug counters, etc
+TODOs
+answer questions - document
+VS warning/suggestions
+
+manip rules:
+the servant - rt without the
+the day of the dolphin - rt without first the -  day_of_the_dolphin
+Ally McBeal - movie instead of tv  = netflix.com/Movie
+
+
+unit tests
+
+integration tests
+
+Actual aggregation: from file? from url?
+add AI
+
+scraping source - into feed?
+Display - MVC
+gitHub
+
+add aggregation
+
+
+
+add aggregation ideas:
+youtube playlists
+spotify playlists
+mail
+fandango
+netflix
+weather
+barf
+news
+monster
+
+netflix(stream + rt
+
+
+Aggregator questions:
+
+why SourceFeed.NewI() instead of syndicationffeed.New()?
+
+If you combine SourceFeed and AggregatedFeed, what happens to SourceDoc?
+Note: BuildItems() creates a new collection of Items because you cannot modify source items directly?
+Is it also the reason for AggreagtedFeed instead of SourceFeed? Me.Summary = New TextSyndicationContent(summary)
+
+Note: SourceDoc is used for cases when we create an AggregatedFeed from sources other than feeds (for example, lists on webpages)
+
+SourceDoc.Content serves same purpose as AggregatorFeed.OuterHTML?
+
+SourceDoc.ItemsOfInterestPath is like Reference.SearchPath?
+why is AggregatorSvc different from Fetcher?)
+
+Note: Parser abstract to have SourceFeed to be generic, specific implemetation is assigned by Fetcher - which pattern?
+
+Parser belongs to the SourceFeed/SourceDoc, because it has to know the structure and type of the original source
+
+References belong to the AggregatorSvc because it creates the output based on these references.
+References belong to the AggregatedFeed, because its output is based on them? - no
+
+-because AggregatedFeedItem.UpdateSummary() uses them - should References be used by the Parser? 
+
+What's the purpose of ReplaceAndApply rule?
+Are different constructors necessary for different ManipulationRule.Types?
+Is reference just another source?
+
+
+
+
+
+
