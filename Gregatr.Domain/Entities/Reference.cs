@@ -1,4 +1,4 @@
-﻿using Gregatr.Domain.Services;
+using Gregatr.Domain.Services;
 //using System.Runtime.CompilerServices;
 
 //[assembly: InternalsVisibleTo("GreGatr.Tests")]
@@ -69,9 +69,9 @@ namespace GreGatr.Domain.Entities
     }
     public class Result
     {
-        public string Name;
+        public string Name = string.Empty;
 
-        public string Content;
+        public string Content = string.Empty;
     }
     public class Reference
     {
@@ -82,12 +82,12 @@ namespace GreGatr.Domain.Entities
         /// //no need for explicit backing field, if auto property can be set only privatley, (no need for => expression either)
         /// </summary>
         public Uri? ContentURI { get; private set; }
-        public required string BaseUrl { get; set; }
-        public required string ImageSrc { get; set; }
+        public string BaseUrl { get; set; } = string.Empty;
+        public string ImageSrc { get; set; } = string.Empty;
         /// <summary>
         /// The path to the searched result within this reference
-        public required string SearchPath { get; set; }
-        public required string ResultName { get; set; }
+        public string SearchPath { get; set; } = string.Empty;
+        public string ResultName { get; set; } = string.Empty;
 
         public Result? Result { get; }
         public List<ManipulationRule>? ItemMatchRules { get; set; }
@@ -118,5 +118,4 @@ namespace GreGatr.Domain.Entities
         }
     }
 }
-
 
