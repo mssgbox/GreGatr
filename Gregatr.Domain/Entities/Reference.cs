@@ -1,7 +1,8 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Gregatr.Domain.Services;
-//using System.Runtime.CompilerServices;
 
-//[assembly: InternalsVisibleTo("GreGatr.Tests")]
 namespace GreGatr.Domain.Entities
 {
     public class ManipulationRule
