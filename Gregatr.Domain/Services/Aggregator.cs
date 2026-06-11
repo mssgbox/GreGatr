@@ -1,4 +1,6 @@
-﻿using System.ServiceModel.Syndication;
+using System;
+using System.Collections.Generic;
+using System.ServiceModel.Syndication;
 using System.Text.Json;
 using System.Xml;
 using Gregatr.Domain.Services;//TODO: why necessary here?
@@ -28,7 +30,7 @@ namespace GreGatr.Domain.Services
 
     public class Aggregator
     {
-        public async Task AggregateMovies2Async()
+        public async System.Threading.Tasks.Task AggregateMovies2Async()
         {
             //Setup source: address, path, etc
             var movieList = Fetcher.GetContentAsync("https://hdrezka.tv/animation/best");
@@ -42,13 +44,13 @@ namespace GreGatr.Domain.Services
             //WriteFeed(outputFeed);
 
         }
-        public async Task AggregateMoviesAsync()
+        public async System.Threading.Tasks.Task AggregateMoviesAsync()
         {
             var references = SetupReferences();
             if (references != null)
             {
                 //Uri sourceFeedUri = new Uri(DefaultFeedUri);
-                var movieList = Fetcher.GetSourceFeed(Path.Combine(Settings.baseDir,Settings.SourceFeedFileName));
+                var movieList = Fetcher.GetSourceFeed(System.IO.Path.Combine(Settings.baseDir,Settings.SourceFeedFileName));
                 var outputFeed = new AggregatedFeed(movieList);
                 //AddReferences has some async work (fetch two references per item asynchronously)
                 //async has to be "bubbled up" all the way to parent caller
@@ -63,7 +65,7 @@ namespace GreGatr.Domain.Services
         public List<Reference>? SetupReferences()
         {
             // Read the configuration file content
-            string json = File.ReadAllText(Path.Combine(Settings.baseDir, Settings.ReferencesConfigFileName));
+            string json = System.IO.File.ReadAllText(System.IO.Path.Combine(Settings.baseDir, Settings.ReferencesConfigFileName));
             // Deserialize the JSON content into a ReferenceConfig List
             var references = JsonSerializer.Deserialize<List<Reference>>(json);
             return references;
@@ -73,7 +75,7 @@ namespace GreGatr.Domain.Services
             // Clear the current response
             //HttpContext.Current.Response.Clear();
             // Using block for automatic resource management
-            using (var feedWriter = XmlWriter.Create(Path.Combine(Settings.outputDir, Settings.OutputFileName))) //(HttpContext.Current.Response.OutputStream))
+            using (var feedWriter = XmlWriter.Create(System.IO.Path.Combine(Settings.outputDir, Settings.OutputFileName))) //(HttpContext.Current.Response.OutputStream))
             {
                 outputFeed.SaveAsRss20(feedWriter);
             }
