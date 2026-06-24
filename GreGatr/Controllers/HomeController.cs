@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.FileSystemGlobbing;
 using GreGatr.Domain.Services;
+using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
+
 
 namespace GreGatr.Controllers
 {

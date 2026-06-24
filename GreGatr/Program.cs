@@ -1,50 +1,38 @@
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
+using System.Threading.Tasks;
 
-var builder = WebApplication.CreateBuilder(args);
-
-
-// Add services to the container.
-builder.Services.AddControllersWithViews();
-
-var app = builder.Build();
-
-
-// Subscribe to the unobserved task exception event globally
-TaskScheduler.UnobservedTaskException += (sender, e) =>
+namespace YourNamespace
 {
-    // Get the logger from DI container
-    var logger = app.Services.GetRequiredService<ILogger<Program>>();
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            var host = CreateHostBuilder(args).Build();
 
-    // Log the exception
-    logger.LogError(e.Exception, "An unobserved task exception occurred.");
+            // Subscribe to unobserved task exceptions
+            TaskScheduler.UnobservedTaskException += (sender, e) =>
+            {
+                var logger = host.Services
+                    .GetRequiredService<ILogger<Program>>();
 
-    // Mark the exception as observed to prevent termination
-    e.SetObserved();
-};
+                logger.LogError(
+                    e.Exception,
+                    "An unobserved task exception occurred.");
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseDeveloperExceptionPage(); // Show detailed error pages in dev
+                e.SetObserved();
+            };
+
+            host.Run();
+        }
+
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStartup<Startup>();
+                });
+    }
 }
-else
-{
-    app.UseExceptionHandler("/Home/Error"); // Handle exceptions and redirect in production
-    app.UseHsts();  // Apply HTTP Strict Transport Security (HSTS) in production
-}
-// Configure the HTTP request pipeline.
-
-
-app.UseHttpsRedirection();
-app.UseRouting();
-
-app.UseAuthorization();
-
-app.MapStaticAssets();
-
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
-    .WithStaticAssets();
-
-
-app.Run();
