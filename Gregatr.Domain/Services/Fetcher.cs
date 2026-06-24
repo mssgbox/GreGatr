@@ -16,7 +16,7 @@ namespace Gregatr.Domain.Services
         //It's recommended to use HttpClient as a singleton to improve performance, especially for multiple requests to the same base URL.
         //Based on future needs consider using IHttpClientFactory or SocketsHttpHandler
         private static readonly HttpClient _client = new HttpClient();
-        public static async Task<string> GetContentAsync(string url)
+        public static async Task<string> GetContentChunksAsync(string url)
         {
             string relevantHTML = String.Empty; 
             
@@ -89,28 +89,26 @@ namespace Gregatr.Domain.Services
             }
             return relevantHTML;
         }
+
+
         //NO CHUNKS code, also see Aggregator.Fetcher ajax chunks
-
-        //using var responseStream = _client.GetStreamAsync(ContentURI);
-        //response.EnsureSuccessStatusCode();s
-        //    _content.Load(responseStream.);
-        //    using (var stream = await response.IsCompleted.)
-        //    {
-        //        _content.Load(stream);
-        //    }
-        //}
-        //try
-        //{
-        //    using var response = await _client.GetAsync(ContentURI);
-        //    response.EnsureSuccessStatusCode();
-        //    _content = new HtmlDocument();
-        //    using (var stream = await response.Content.ReadAsStreamAsync())
-        //    {
-        //        _content.Load(stream);
-        //    }
-        //}
-
-        //OLD HttpWebRequest code:
+public static async Task<string> GetContentAsync(string url)
+        {
+            string relevantHTML = String.Empty; 
+            
+        try
+        {
+           relevantHTML = await _client.GetStringAsync(url);
+        }
+          catch (HttpRequestException ex)
+            {
+                //System.Diagnostics.Debug.WriteLine($"{ContentURI} -- {ex.Message}");                
+                if (ex.StatusCode != HttpStatusCode.NotFound) throw;
+                
+            }  
+        
+        return relevantHTML;
+        // OLD HttpWebRequest code:
         //    try
         //    {
         //        var request = (HttpWebRequest)WebRequest.Create(ContentURI);
@@ -122,7 +120,7 @@ namespace Gregatr.Domain.Services
         //            _content.Load(stream);
         //        }
         //    }
-
+    }
 
         // Get the SyndicationFeed from a file path
         public static SyndicationFeed GetSourceFeed(string filePath)

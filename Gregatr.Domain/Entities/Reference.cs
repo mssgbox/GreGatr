@@ -112,9 +112,12 @@ namespace GreGatr.Domain.Entities
             //TODO: IoC
             var content = await Fetcher.GetContentAsync(BaseUrl+itemIdentifier);
             var parser = new Parser(); 
-            var result = parser.ParseContent(content, SearchPath);
+            //var result = parser.ParseContent(content, SearchPath);
+            //TODO: settings
+            var result = parser.ParseJSONContent(content, "//script[@type='application/ld+json']");
             System.Diagnostics.Debug.WriteLine($"{BaseUrl} finished");
-
+            
+            
             return result;
         }
     }

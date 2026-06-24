@@ -1,5 +1,6 @@
 ﻿using HtmlAgilityPack;
-
+using System;
+using System.Text.Json;
 namespace Gregatr.Domain.Services
 {
     internal class Parser
@@ -11,12 +12,15 @@ namespace Gregatr.Domain.Services
 #endif
         internal object ParseContent(string relevantHTML, string searchPath)
         {
+            //System.Console.WriteLine($"[LOG]: {searchPath} finished");
+            //System.Console.Write($"[==start]: {relevantHTML} ==end");
+            
             string result = "Not Found";
             _content = new HtmlDocument();
             _content.LoadHtml(relevantHTML);
 
             HtmlNode node = _content.DocumentNode.SelectSingleNode(searchPath);
-
+            
             if (node != null)
             {
                 var score = String.Empty;
@@ -31,7 +35,47 @@ namespace Gregatr.Domain.Services
             }
             return result;
         }
+internal object ParseJSONContent(string relevantHTML, string jsonPath)
+        {
+            //System.Console.WriteLine($"[LOG]: {searchPath} finished");
+            //System.Console.Write($"[==start]: {relevantHTML} ==end");
+            
+            string result = "Not Found";
+            _content = new HtmlDocument();
+            _content.LoadHtml(relevantHTML);
 
+
+        // This single XPath works universally on Metacritic, Rotten Tomatoes, and IMDb
+        HtmlNode node = _content.DocumentNode.SelectSingleNode(jsonPath);
+            
+            if (node != null)
+            {
+                using (JsonDocument jsonDoc = JsonDocument.Parse(node.InnerText))
+                {
+                    JsonElement root = jsonDoc.RootElement;
+
+                    //TODO Handle arrays (some sites embed multiple schemas in a single tag block)
+                    if (root.ValueKind == JsonValueKind.Object)
+                    {
+                        if (TryExtractScore(root, out string score)) result = score;
+                    }
+                }
+            }
+            return result;
+        }
+
+        private static bool TryExtractScore(JsonElement element, out string score)
+    {
+        score = String.Empty;
+        if (element.TryGetProperty("aggregateRating", out JsonElement aggregateRating) &&
+            aggregateRating.TryGetProperty("ratingValue", out JsonElement ratingValue))
+        {
+            // Metacritic stores numbers as integers/doubles directly; RT stores them as strings
+            score = ratingValue.ToString();
+            return true;
+        }
+        return false;
+    }
 //        private string FindResult()
 //        {
 //            //NOTE: Result class when more functionality
