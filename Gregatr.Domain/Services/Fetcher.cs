@@ -15,6 +15,12 @@ namespace Gregatr.Domain.Services
     {
         //It's recommended to use HttpClient as a singleton to improve performance, especially for multiple requests to the same base URL.
         //Based on future needs consider using IHttpClientFactory or SocketsHttpHandler
+
+        //TODO: speicify timeout based on future performance
+        // private static readonly HttpClient _client = new HttpClient 
+        // { 
+        //     Timeout = TimeSpan.FromSeconds(10) 
+        // };
         private static readonly HttpClient _client = new HttpClient();
         public static async Task<string> GetContentChunksAsync(string url)
         {

@@ -25,7 +25,7 @@ namespace GreGatr.Domain.Entities
         public AggregatedFeed(SyndicationFeed sourceFeed)
         {
             //Copy items from source
-            //TODO: check for performance problems from copying huge feeds under load
+            //NOTE: this.Items = sourceFeed.Items is just assigning the IEnumerable<> reference, not actually copying.
 
             var tagPrefix = new XmlQualifiedName(Settings.Prefix, Settings.XMLNamespace);
             base.AttributeExtensions.Add(tagPrefix, Settings.DaNamespace);
@@ -36,6 +36,12 @@ namespace GreGatr.Domain.Entities
         public void Sort()
         {
             //TODO: use LINQ instead of IComparer?
+/* var scores = items.ToDictionary(
+    item => item,
+    item => GetHigherScore(item));
+
+items.Sort((a,b) => scores[b].CompareTo(scores[a])); */
+
             var itemsList = Items.ToList();
             itemsList.Sort(new Services.ScoreComparer());
             this.Items = itemsList;
@@ -48,8 +54,12 @@ namespace GreGatr.Domain.Entities
                 //ASYNC: 
                 //foreach reference
                 //get the info asynchronously: Tasks.Add without await
-                //add the info synchronously: add await at this point or WhenAll()
-             
+                //TODO: can parallelize feedItems too with SemaphorSlim to limit concurrent requests to the same Reference source
+                //however need to also consider multiple users launching same enrichment at the same time
+                
+                //TODO: Wrap each task so failures return a fallback instead of throwing
+                // var task = reference.GetResultAsync(feedItem.Title.Text)
+                //     .ContinueWith(t => t.IsFaulted ? (object)"Not Found" : t.Result);
                 List<Task<object>> tasks = new List<Task<object>>();
                 foreach (var reference in references)
                 {
@@ -59,9 +69,11 @@ namespace GreGatr.Domain.Entities
                 }
                 var results = await Task.WhenAll(tasks);
                 
-                //TODO: smells hacky; also consider AggregatedFeedItem class
+                //this is done synchronously because the same feed item is modified
+                //TODO: consider AggregatedFeedItem class
                 for(int i = 0; i<references.Count(); i++)
                 {
+                    //Task.WhenAll() guarantees that the result array preserves the order of the input tasks
                     AddReferenceInfo(references[i], results[i], feedItem);
                 }
             }
@@ -72,14 +84,18 @@ namespace GreGatr.Domain.Entities
             //var result = reference.GetResult(feedItem.Title.Text);
             feedItem.ElementExtensions.Add(new SyndicationElementExtension(reference.ResultName, Settings.DaNamespace, result));
             string summary = feedItem.Summary.Text;
+
+            string encodedResult = System.Net.WebUtility.HtmlEncode(result?.ToString() ?? string.Empty);
+
             if (reference.ContentURI != null)
             {
-                summary = summary.Insert(0, $"{reference.ImageSrc}<a href='{reference.ContentURI.AbsoluteUri}'>{result}</a><br />");
+                summary = summary.Insert(0, $"{reference.ImageSrc}<a href=\"{reference.ContentURI.AbsoluteUri}\">{encodedResult}</a><br />");
             }
             else
             {
-                summary = summary.Insert(0, $"{reference.ImageSrc}{result}<br />");
+                summary = summary.Insert(0, $"{reference.ImageSrc}{encodedResult}<br />");
             }
+
             feedItem.Summary = new TextSyndicationContent(summary);
         }
     }

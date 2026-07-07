@@ -7,7 +7,7 @@ using Gregatr.Domain.Services;//TODO: why necessary here?
 using GreGatr.Domain.Entities;
 public static class Settings
 {
-    //TODO: Settings provider
+    //TODO: Settings provider, config file
     //private const string DefaultFeedUri = "http://www.netflix.com/NewWatchInstantlyRSS";
 
     //public static string FilesDir = Path.Combine(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.Parent.FullName, "files");
@@ -75,6 +75,8 @@ namespace GreGatr.Domain.Services
             // Clear the current response
             //HttpContext.Current.Response.Clear();
             // Using block for automatic resource management
+            //TODO: Consider multiple users generating the same file
+
             using (var feedWriter = XmlWriter.Create(System.IO.Path.Combine(Settings.outputDir, Settings.OutputFileName))) //(HttpContext.Current.Response.OutputStream))
             {
                 outputFeed.SaveAsRss20(feedWriter);
